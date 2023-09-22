@@ -1,0 +1,35 @@
+{
+    "dataRoles": [  
+        {
+            "displayName": "X-axis",
+            "name": "x-axis-data",
+            "kind": "GroupingOrMeasure"
+        },
+        {
+            "displayName": "Y-axis",
+            "name": "y-axis-data",
+            "kind": "Measure"
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "categorical": {
+                "categories": {
+                    "for": {
+                        "in": "x-axis-data"
+                    }
+                },
+                "values": {
+                    "select": [
+                        {
+                            "bind": {
+                                "to": "y-axis-data"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "privileges": []
+}
