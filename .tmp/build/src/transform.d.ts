@@ -10,12 +10,5 @@ export declare const emptyLineGraphData: {
         subLabel: string;
     };
     data: any[];
-    labels: {
-        label: string;
-        value: string;
-        color: string;
-        color1: string;
-        colorOpacity: number;
-        colorOpacity1: number;
-    }[];
+    labels: any[];
 };

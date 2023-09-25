@@ -193,6 +193,88 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ 192:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7294);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1893);
+
+
+const Legends = ({ labels }) => {
+    console.log(labels);
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(Wrapper, null, labels?.map((el) => {
+        return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(LegenedWrapper, null,
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(SquareColor, { color: el?.color }),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(Text, null,
+                " ",
+                el?.label,
+                " ")));
+    })));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Legends);
+const Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .ZP.div `
+  display: flex;
+  gap: 1rem;
+`;
+const SquareColor = styled_components__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .ZP.div `
+  height: 1rem;
+  width: 1rem;
+  background-color: ${({ color }) => color};
+  border-radius: 0.2rem;
+`;
+const LegenedWrapper = styled_components__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .ZP.div `
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+const Text = styled_components__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .ZP.div `
+  line-height: 1rem;
+`;
+
+
+/***/ }),
+
+/***/ 126:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7294);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1893);
+
+
+const PortalTooltip = (props) => {
+    if (!props.isOpen) {
+        return null;
+    }
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(Container, { pos: props.pos, align: props.align, style: props?.style, vAlign: props.vAlign }, props.children));
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (PortalTooltip);
+const Container = styled_components__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .ZP.div `
+  transform: ${(props) => props.align === "left" ? "translateX(-100%)" : "translateX(0%)"};
+  transform: ${(props) => props.vAlign === "top" ? "translateY(-100%)" : "translateY(0%)"};
+  position: absolute;
+  left: ${(props) => props.align === "left" ? props.pos.left - 25 : props.pos.left + 25}px;
+  top: ${(props) => props.vAlign === "top" ? props.pos.top - 25 : props.pos.top + 25}px;
+  /* top: ${(props) => props.pos.top || 0}px; */
+  z-index: 1001;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0px 2.90418px 5.80835px rgba(88, 88, 88, 0.3);
+  border-radius: 8.71253px;
+  width: fit-content;
+`;
+
+
+/***/ }),
+
 /***/ 2857:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -200,12 +282,16 @@ process.umask = function() { return 0; };
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ZP: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* unused harmony exports GraphContainer, GraphWrap */
+/* unused harmony exports GraphContainer, TooltipWrapper, TooltipTitle, TooltipBody, Div, TooltipColorBox, TooltipValueBox */
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7294);
-/* harmony import */ var _nanostores_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4562);
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(1893);
+/* harmony import */ var _nanostores_react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(4562);
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(1893);
 /* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8994);
-/* harmony import */ var _graphs_LinearLine_graphWrapper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5665);
+/* harmony import */ var _PortalTooltip__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(126);
+/* harmony import */ var _Legends__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(192);
+/* harmony import */ var _graphs_LinearLine_graphWrapper__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(5665);
+
+
 
 
 
@@ -213,48 +299,148 @@ process.umask = function() { return 0; };
 
  //////////////////////
 const VisualComponent = () => {
+    const [enableTooltip, setEnableTooltip] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+    const [toolTipPos, setToolTipPos] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({ left: 0, top: 0 });
+    const [tooltipData, setTooltipData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({ label: "", data: [] });
+    const [labels, setLabels] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+    const handleMouseEnter = (event, d) => {
+        console.log("d", d);
+        setEnableTooltip(() => true);
+        setToolTipPos({
+            ...toolTipPos,
+            left: event.clientX,
+            top: event.clientY - 10,
+        });
+        const labelsLineGraph = lineGraphData?.labels?.map((el) => el.label);
+        console.log(labelsLineGraph);
+        const prepareLableData = {
+            label: d?.label,
+            data: [],
+        };
+        for (let i = 0; i < labelsLineGraph?.length; i++) {
+            prepareLableData.data.push({
+                value: d[labelsLineGraph[i]],
+                color: d[`${labelsLineGraph[i]}Color`],
+            });
+        }
+        setTooltipData(prepareLableData);
+        // const tData = d.data || d;
+        // setTooltipData({ label: tData?.label, value: tData?.value });
+    };
+    const handleMouseMove = (event) => {
+        setToolTipPos({
+            ...toolTipPos,
+            left: event.clientX,
+            top: event.clientY - 10,
+        });
+        // }
+    };
+    const handleMouseLeave = () => {
+        setToolTipPos({
+            left: 0,
+            top: 0,
+        });
+        setEnableTooltip(() => false);
+        setTooltipData({ label: "", value: "" });
+        //}
+    };
     const lineGraphData = _store_store__WEBPACK_IMPORTED_MODULE_1__/* .$lineGraphData */ .Wi.get();
-    let width = (0,_nanostores_react__WEBPACK_IMPORTED_MODULE_3__/* .useStore */ .o)(_store_store__WEBPACK_IMPORTED_MODULE_1__/* .$width */ .jP);
-    let height = (0,_nanostores_react__WEBPACK_IMPORTED_MODULE_3__/* .useStore */ .o)(_store_store__WEBPACK_IMPORTED_MODULE_1__/* .$height */ .Ys);
+    let width = (0,_nanostores_react__WEBPACK_IMPORTED_MODULE_5__/* .useStore */ .o)(_store_store__WEBPACK_IMPORTED_MODULE_1__/* .$width */ .jP);
+    let height = (0,_nanostores_react__WEBPACK_IMPORTED_MODULE_5__/* .useStore */ .o)(_store_store__WEBPACK_IMPORTED_MODULE_1__/* .$height */ .Ys);
+    let renderTheGraphBool = (0,_nanostores_react__WEBPACK_IMPORTED_MODULE_5__/* .useStore */ .o)(_store_store__WEBPACK_IMPORTED_MODULE_1__/* .$renderTheGraph */ .g1);
     let size = Math.min(width, height);
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-        console.log(width, height, lineGraphData);
-    }, [width, height, lineGraphData]);
-    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(GraphContainer, { size: +size },
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement(GraphWrap, null,
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(_graphs_LinearLine_graphWrapper__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .ZP, { data: lineGraphData, config: {
-                    graphType: "line",
-                    padding: {
-                        left: 25,
-                        top: 25,
-                        bottom: 25,
-                        right: 25
-                    },
-                    //   handleMouseMove,
-                    //   handleMouseEnter,
-                    //   handleMouseLeave,
-                } }))));
+        // console.log(width, height, lineGraphData);
+        // console.log("rendering the graph");
+        // const labelsLineGraph = lineGraphData.map((el) => el.label);
+        // setLabels(labelsLineGraph);
+    }, [width, height, lineGraphData, renderTheGraphBool]);
+    // useEffect(()=>{
+    //  const labelsLineGraph = lineGraphData.map((el) => el.label);
+    //   setLabels(labelsLineGraph);
+    // },[lineGraphData])
+    return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(GraphContainer, { size: size },
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement(_graphs_LinearLine_graphWrapper__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .ZP, { data: lineGraphData, config: {
+                graphType: "line",
+                gridXYLabelFontSize: `${10}`,
+                enableGridYLine: true,
+                gridLineStrokeWidth: 1,
+                dasharray: 0,
+                pointCircleFontSize: 0,
+                //   enablePointCircle: true,
+                disableCircleLabel: true,
+                yAxisType: "number",
+                yAxisTicksFormat: true,
+                //   hideYAxis: false,
+                enableAllPointToolTip: false,
+                gridXTicks: `${5}`,
+                //   pointCircleStroke: "#fff",
+                //   pointCircleStrokeWidth: 3,
+                hoverLine: true,
+                padding: {
+                    left: 25,
+                    // bottom : 25
+                },
+                handleMouseMove,
+                handleMouseEnter,
+                handleMouseLeave,
+            } }),
+        enableTooltip && (react__WEBPACK_IMPORTED_MODULE_0__.createElement(_PortalTooltip__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z, { isOpen: true, pos: toolTipPos, align: toolTipPos.left > window.innerWidth / 2 ? "left" : "right", vAlign: toolTipPos.top > window.innerHeight / 2 ? "top" : "bottom" },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(TooltipWrapper, null,
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement(TooltipTitle, null, tooltipData?.label),
+                react__WEBPACK_IMPORTED_MODULE_0__.createElement(TooltipBody, null, tooltipData?.data?.map((el) => (react__WEBPACK_IMPORTED_MODULE_0__.createElement(Div, null,
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(TooltipColorBox, { color: el.color }),
+                    react__WEBPACK_IMPORTED_MODULE_0__.createElement(TooltipValueBox, null,
+                        " ",
+                        el.value,
+                        " ")))))))),
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Legends__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z, { labels: lineGraphData?.labels })));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (VisualComponent);
-const GraphContainer = styled_components__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .ZP.div `
+const GraphContainer = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div `
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: ${({ size }) => size + "px" || 0};
 `;
-const GraphWrap = styled_components__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .ZP.div `
-  position: relative;
-  width: 100% !important;
-  height: 100% !important;
-
-  .circle-path-center-label {
-    font-size: 1rem !important;
-  }
-  .circle-path-center-sub-label {
-    font-size: 0.75rem !important;
-  }
+// export const GraphWrap = styled.div`
+//   position: relative;
+//   width: 100% !important;
+//   height: 100% !important;
+//   .circle-path-center-label {
+//     font-size: 1rem !important;
+//   }
+//   .circle-path-center-sub-label {
+//     font-size: 0.75rem !important;
+//   }
+// `;
+const TooltipWrapper = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div `
+  padding: 0.7rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
+const TooltipTitle = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div `
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 0.5rem;
+  color: #585858;
+`;
+const TooltipBody = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div `
+  display: flex;
+  flex-direction: column;
+`;
+const Div = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div `
+  display: flex;
+`;
+const TooltipColorBox = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div `
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+  background-color: ${({ color }) => color};
+`;
+const TooltipValueBox = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div ``;
 
 
 /***/ }),
@@ -421,6 +607,7 @@ const ResizeHandlerHOC = (Component) => {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Wi: () => (/* binding */ $lineGraphData),
 /* harmony export */   Ys: () => (/* binding */ $height),
+/* harmony export */   g1: () => (/* binding */ $renderTheGraph),
 /* harmony export */   jP: () => (/* binding */ $width)
 /* harmony export */ });
 /* harmony import */ var nanostores__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(175);
@@ -430,6 +617,7 @@ const ResizeHandlerHOC = (Component) => {
 const $lineGraphData = (0,nanostores__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .c)(_transform__WEBPACK_IMPORTED_MODULE_0__/* .emptyLineGraphData */ .e);
 const $height = (0,nanostores__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .c)(0);
 const $width = (0,nanostores__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .c)(0);
+const $renderTheGraph = (0,nanostores__WEBPACK_IMPORTED_MODULE_1__/* .atom */ .c)(true);
 
 
 /***/ }),
@@ -453,18 +641,49 @@ function visualTransform(options, host) {
         !dataViews[0].categorical.categories[0].source ||
         !dataViews[0].categorical.values)
         return graphData;
+    /////////////////////////////////////////////////
     let categorical = dataViews[0].categorical;
-    let category = categorical.categories[0];
-    let dataValue = categorical.values[0];
-    let array = [];
-    //   console.log("Category", category, "dataValue", dataValue);
-    for (let i = 0, len = Math.max(category.values.length, dataValue.values.length); i < len; i++) {
-        array.push({
-            label: category.values[i],
-            value: dataValue.values[i],
+    let category = categorical.categories[0].values;
+    let dataValue = categorical.values;
+    let xAxisDisplayName = categorical.categories[0].source.displayName;
+    ///////////////////////-----y-axis labels name-----////////////////////////////////////
+    let yAxisDisplayName = categorical.values;
+    let yAxisDisplayNameArray = [];
+    for (let i = 0; i < yAxisDisplayName.length; i++) {
+        yAxisDisplayNameArray.push(yAxisDisplayName[i].source.displayName);
+    }
+    /////////////////////////////////////////////////////////////////////////////////////
+    //   console.log("hey", category,dataValue)
+    let result = [];
+    for (let i = 0; i < category.length; i++) {
+        let countryData = {
+            label: category[i]
+        };
+        for (let j = 0; j < dataValue.length; j++) {
+            // countryData[`value${j + 1}`] = dataValue[j].values[i];
+            // countryData[`planned`] = dataValue[j].values[i];
+            // countryData[`actual`] = dataValue[j].values[i]+16710000;
+            for (let k = 0; k < yAxisDisplayNameArray.length; k++) {
+                countryData[yAxisDisplayNameArray[k]] = dataValue[j].values[i] + Math.floor(Math.random() * 7567848);
+            }
+        }
+        result.push(countryData);
+    }
+    // console.log("result",result);
+    graphData.data = result;
+    ////////////////////------------labelsArray---------/////////////////////////////
+    let labelsArray = [];
+    let colorsArray = ["black", "#ED0295", "red", "black", "teal"];
+    for (let i = 0; i < yAxisDisplayNameArray.length; i++) {
+        labelsArray.push({
+            label: yAxisDisplayNameArray[i].toUpperCase(),
+            value: yAxisDisplayNameArray[i],
+            color: colorsArray[i]
         });
     }
-    graphData.data = array;
+    graphData.labels = labelsArray;
+    //   console.log("graphData",graphData)
+    ///////////////////////////////////////////////////////////////////////////////////
     return graphData;
 }
 const emptyLineGraphData = {
@@ -472,16 +691,7 @@ const emptyLineGraphData = {
     subtitle: "",
     summary: { label: "", subLabel: "" },
     data: [],
-    labels: [
-        {
-            label: "Planned Migration",
-            value: "value",
-            color: "#ED0295",
-            color1: "#ffffff",
-            colorOpacity: 1,
-            colorOpacity1: 0.1,
-        },
-    ],
+    labels: []
 };
 
 
@@ -531,6 +741,7 @@ class Visual {
             const transformedData = (0,_transform__WEBPACK_IMPORTED_MODULE_1__/* .visualTransform */ .S)(options, this.host);
             // console.log(transformedData);
             _store_store__WEBPACK_IMPORTED_MODULE_4__/* .$lineGraphData */ .Wi.set(transformedData);
+            _store_store__WEBPACK_IMPORTED_MODULE_4__/* .$renderTheGraph */ .g1.set(!_store_store__WEBPACK_IMPORTED_MODULE_4__/* .$lineGraphData */ .Wi.get());
         }
         else {
             // this.clear();
@@ -2756,19 +2967,18 @@ const yAxis = function yAxis() {
         if (config.gridYTicks) {
           yaxis.ticks(config.gridYTicks)
         }
-        // if (config.yAxisType === 'text') {
-        //   yaxis.tickFormat((d, i) => {
-        //     if (typeof d === 'string' && d.length > 13) {
-        //       return `${d.slice(0, 13)}..`
-        //     }
-
-        //     return d
-        //   })
-        // } else {
-        //   yaxis.tickFormat((d, i) => {
-        //     return config.yAxisTicksFormat ? formatNumber(d) : d
-        //   })
-        // }
+        if (config.yAxisType === 'text') {
+          yaxis.tickFormat((d, i) => {
+            if (typeof d === 'string' && d.length > 13) {
+              return `${d.slice(0, 13)}..`
+            }
+            return d
+          })
+        } else {
+          yaxis.tickFormat((d, i) => {
+            return config.yAxisTicksFormat ? formatNumber(d) : d
+          })
+        }
         const clearArea =
           config.width < config.height ? config.width : config.height
 

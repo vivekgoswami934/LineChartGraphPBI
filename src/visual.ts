@@ -20,7 +20,7 @@ import * as ReactDOM from "react-dom";
 import * as d3 from "d3";
 import { useStore } from "@nanostores/react";
 
-import { $height, $lineGraphData, $width } from "./store/store";
+import { $height, $lineGraphData, $renderTheGraph, $width } from "./store/store";
 
 import "./../style/visual.less";
 
@@ -56,6 +56,7 @@ export class Visual implements IVisual {
         // console.log(transformedData);
 
       $lineGraphData.set(transformedData);
+      $renderTheGraph.set(!$lineGraphData.get());
 
     } else {
       // this.clear();

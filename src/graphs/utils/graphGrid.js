@@ -373,19 +373,18 @@ export const yAxis = function yAxis() {
         if (config.gridYTicks) {
           yaxis.ticks(config.gridYTicks)
         }
-        // if (config.yAxisType === 'text') {
-        //   yaxis.tickFormat((d, i) => {
-        //     if (typeof d === 'string' && d.length > 13) {
-        //       return `${d.slice(0, 13)}..`
-        //     }
-
-        //     return d
-        //   })
-        // } else {
-        //   yaxis.tickFormat((d, i) => {
-        //     return config.yAxisTicksFormat ? formatNumber(d) : d
-        //   })
-        // }
+        if (config.yAxisType === 'text') {
+          yaxis.tickFormat((d, i) => {
+            if (typeof d === 'string' && d.length > 13) {
+              return `${d.slice(0, 13)}..`
+            }
+            return d
+          })
+        } else {
+          yaxis.tickFormat((d, i) => {
+            return config.yAxisTicksFormat ? formatNumber(d) : d
+          })
+        }
         const clearArea =
           config.width < config.height ? config.width : config.height
 

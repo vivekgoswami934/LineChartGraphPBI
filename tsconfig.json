@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "types": ["react", "react-dom"],
-    "allowJs": false,
+    "allowJs": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es2022",

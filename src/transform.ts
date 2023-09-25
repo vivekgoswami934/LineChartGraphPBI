@@ -19,24 +19,68 @@ export function visualTransform(
     !dataViews[0].categorical.values
   )
     return graphData;
-
+  
+/////////////////////////////////////////////////
   let categorical: any = dataViews[0].categorical;
-  let category = categorical.categories[0];
-  let dataValue = categorical.values[0];
+  let category = categorical.categories[0].values;
+  let dataValue = categorical.values;
 
-  let array: any = [];
-  //   console.log("Category", category, "dataValue", dataValue);
+  let xAxisDisplayName = categorical.categories[0].source.displayName;
 
-  for (let i = 0, len = Math.max(category.values.length, dataValue.values.length); i < len; i++) {
-    array.push({
-      label: <string>category.values[i],
-      value: <number>dataValue.values[i],
-    });
+  ///////////////////////-----y-axis labels name-----////////////////////////////////////
+  let yAxisDisplayName = categorical.values;
+  
+  let yAxisDisplayNameArray = [];
+  
+  for(let i = 0 ; i < yAxisDisplayName.length ; i++){
+      yAxisDisplayNameArray.push(yAxisDisplayName[i].source.displayName)
+    }
+ /////////////////////////////////////////////////////////////////////////////////////
 
+
+//   console.log("hey", category,dataValue)
+
+  let result = [];
+
+for (let i = 0; i < category.length; i++) {
+    let countryData = {
+        label: category[i]
+    };
+
+    for (let j = 0; j < dataValue.length; j++) {
+        // countryData[`value${j + 1}`] = dataValue[j].values[i];
+        // countryData[`planned`] = dataValue[j].values[i];
+        // countryData[`actual`] = dataValue[j].values[i]+16710000;
+
+        for(let k = 0 ; k < yAxisDisplayNameArray.length ; k++){
+           countryData[yAxisDisplayNameArray[k]] = dataValue[j].values[i] + Math.floor(Math.random()*7567848);
+        }
+
+    }
+
+    result.push(countryData);
+}
+
+// console.log("result",result);
+
+   graphData.data = result
+
+  ////////////////////------------labelsArray---------/////////////////////////////
+  let labelsArray = [];
+  let colorsArray = ["black", "#ED0295", "red", "black", "teal"];
+
+  for(let i = 0; i < yAxisDisplayNameArray.length; i++){
+       labelsArray.push({
+        label : yAxisDisplayNameArray[i].toUpperCase(),
+        value : yAxisDisplayNameArray[i],
+        color : colorsArray[i]
+       })
   }
 
-  graphData.data = array
+  graphData.labels = labelsArray
 
+//   console.log("graphData",graphData)
+  ///////////////////////////////////////////////////////////////////////////////////
   return graphData
 
 }
@@ -46,14 +90,5 @@ export const emptyLineGraphData = {
   subtitle: "",
   summary: { label: "", subLabel: "" },
   data: [],
-  labels: [
-    {
-      label: "Planned Migration",
-      value: "value",
-      color: "#ED0295",
-      color1: "#ffffff",
-      colorOpacity: 1,
-      colorOpacity1: 0.1,
-    },
-  ],
+  labels: []
 };
