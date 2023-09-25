@@ -433,6 +433,9 @@ const TooltipBody = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"]
 `;
 const Div = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div `
   display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 `;
 const TooltipColorBox = styled_components__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .ZP.div `
   height: 0.5rem;
