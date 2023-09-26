@@ -50,7 +50,6 @@ export class Visual implements IVisual {
     $height.set(height);
 
     if (options.dataViews && options.dataViews[0]) {
-      console.log("inside" ,"vivek",options);
       const transformedData: any = visualTransform(options, this.host);
 
         // console.log(transformedData);

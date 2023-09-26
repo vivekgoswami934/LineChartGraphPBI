@@ -67,7 +67,7 @@ for (let i = 0; i < category.length; i++) {
 
   ////////////////////------------labelsArray---------/////////////////////////////
   let labelsArray = [];
-  let colorsArray = ["black", "#ED0295", "red", "black", "teal"];
+  let colorsArray = [ "#ED0295","black", "red", "gray", "teal"];
 
   for(let i = 0; i < yAxisDisplayNameArray.length; i++){
        labelsArray.push({

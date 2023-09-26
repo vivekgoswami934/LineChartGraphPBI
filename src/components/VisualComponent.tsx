@@ -20,7 +20,7 @@ const VisualComponent = (): JSX.Element => {
   const [labels, setLabels] = useState();
 
   const handleMouseEnter = (event, d) => {
-    console.log("d", d);
+    // console.log("d", d);
     setEnableTooltip(() => true);
     setToolTipPos({
       ...toolTipPos,
@@ -87,7 +87,7 @@ const VisualComponent = (): JSX.Element => {
 
   return (
     <GraphContainer size={size}>
-      <LinearLine
+     { lineGraphData?.data?.length > 0 && <LinearLine
         data={lineGraphData}
         config={{
           graphType: "line",
@@ -110,13 +110,14 @@ const VisualComponent = (): JSX.Element => {
           hoverLine: true,
           padding: {
             left: 25,
+            right : 10
             // bottom : 25
           },
           handleMouseMove,
           handleMouseEnter,
           handleMouseLeave,
         }}
-      />
+      />}
       {enableTooltip && (
         <PortalTooltip
           isOpen={true}

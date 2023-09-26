@@ -1,0 +1,17 @@
+{
+		"version": "1.0.0.0",
+		"author": {"name":"Vivek","email":"vivek@rhombuz.io"},
+		"resources": [
+			{
+				"resourceId": "rId0",
+				"sourceType": 5,
+				"file": "resources/lineChartRhombuz.pbiviz.json"
+			}
+		],
+		"visual": {"name":"lineChart","displayName":"lineChartRhombuz","guid":"lineChartRhombuz","visualClassName":"Visual","version":"1.0.0.0","description":"A custom Rhombuz linechart visual","supportUrl":"https://rhombuz.io/contact","gitHubUrl":""},
+		"metadata": {
+			"pbivizjson": {
+				"resourceId": "rId0"
+			}
+		}
+	}

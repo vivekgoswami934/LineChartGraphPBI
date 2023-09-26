@@ -1,16 +1,16 @@
 {
   "visual": {
-    "name": "helloWorld",
-    "displayName": "HelloWorld",
-    "guid": "helloWorld785F96AF96314A56AEC8A2CDA3213EB3",
+    "name": "lineChart",
+    "displayName": "lineChartRhombuz",
+    "guid": "lineChartRhombuz",
     "visualClassName": "Visual",
     "version": "1.0.0.0",
-    "description": "",
-    "supportUrl": "",
+    "description": "A custom Rhombuz linechart visual",
+    "supportUrl":  "https://rhombuz.io/contact",
     "gitHubUrl": ""
   },
   "apiVersion": "5.3.0",
-  "author": { "name": "", "email": "" },
+  "author": { "name": "Vivek", "email": "vivek@rhombuz.io" },
   "assets": { "icon": "assets/icon.png" },
   "style": "style/visual.less",
   "capabilities": "capabilities.json",

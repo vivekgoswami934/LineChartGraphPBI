@@ -3,7 +3,7 @@ import * as React from "react";
 import styled from "styled-components";
 
 const Legends = ({ labels }) => {
-  console.log(labels);
+//   console.log(labels);
   return (
     <Wrapper>
       {labels?.map((el) => {
